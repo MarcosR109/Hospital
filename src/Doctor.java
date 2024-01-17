@@ -4,10 +4,10 @@ public class Doctor {
 
 
     public String toString() {
-        return           ("DNI=" + DNI + '\'' +
-                        ", name=" + name + '\'' +
-                        ", lastName=" + lastName + '\'' +
-                        ", speciality=" + speciality + '\'' +
+        return           ("DNI=" + DNI + '\n' +
+                        ", name=" + name + '\n' +
+                        ", lastName=" + lastName + '\n' +
+                        ", speciality=" + speciality + '\n' +
                         ", salary=" + salary +
                         ", age=" + age +
                         ", phone=" + phone);

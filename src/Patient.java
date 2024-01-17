@@ -1,6 +1,6 @@
 public class Patient {
-    String DNI,name,lastName,disease,SSN;
-    int age,phone;
+    private String DNI,name,lastName,disease,SSN;
+    private int age,phone;
 
     @Override
     public String toString() {
