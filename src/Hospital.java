@@ -39,12 +39,7 @@ public class Hospital {
     }
 
     public boolean validSpeciality(String speciality){
-        for(String sp: specialities){
-            if(sp.equals(speciality)){
-                return true;
-            }
-        }
-        return false;
+        return specialities.contains(speciality);
     }
 
     public void addDoctor(Doctor dotor){
