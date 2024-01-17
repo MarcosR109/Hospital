@@ -11,6 +11,15 @@ public class Hospital {
     ArrayList <Patient> patientsWaiting;
     ArrayList <Doctor> doctors;
 
+    public void menu(){
+        System.out.println("#######################");
+        System.out.println("Choose an option");
+
+
+
+
+
+    }
     @Override
     public String toString() {
         return  "name=" + name + '\'' +
