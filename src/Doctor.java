@@ -4,13 +4,13 @@ public class Doctor {
 
 
     public String toString() {
-        return           ("DNI=" + DNI + '\n' +
-                        ", name=" + name + '\n' +
-                        ", lastName=" + lastName + '\n' +
-                        ", speciality=" + speciality + '\n' +
-                        ", salary=" + salary +
-                        ", age=" + age +
-                        ", phone=" + phone);
+        return           ("DNI=" + DNI +
+                        "\n name=" + name +
+                        "\n lastName=" + lastName +
+                        "\n speciality=" + speciality +
+                        "\n salary=" + salary +
+                        "\n age=" + age +
+                        "\n phone=" + phone);
     }
 
     public Doctor(String DNI, String name, String lastName, String speciality, int salary, int age, int phone) {

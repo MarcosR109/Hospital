@@ -18,8 +18,8 @@ public class Main {
         SanPedro.addDoctor(new Doctor("347654331G","Fulgencio","Fulgencius","Traumatology",53000,35,653534855));
         System.out.println(SanPedro);
         SanPedro.addPatient(new Patient("53532512X","Fulgencia","Fulgencius","Taumatology","64564644964",65,658654659));
-        System.out.println(SanPedro.getPatientsWaiting());
-        System.out.println(SanPedro);
+        //System.out.println(SanPedro.getPatientsWaiting());
+        //System.out.println(SanPedro);
 
     }
 }

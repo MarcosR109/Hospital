@@ -5,12 +5,12 @@ public class Patient {
     @Override
     public String toString() {
         return  "DNI='" + DNI + '\'' +
-                ", name='" + name + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", disease='" + disease + '\'' +
-                ", SSN=" + SSN +
-                ", age=" + age +
-                ", phone=" + phone;
+                "\n name='" + name + '\'' +
+                "\n lastName='" + lastName + '\'' +
+                "\n disease='" + disease + '\'' +
+                "\n SSN=" + SSN +
+                "\n age=" + age +
+                "\n phone=" + phone;
     }
 
     public String getDNI() {

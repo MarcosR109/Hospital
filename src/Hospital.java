@@ -13,11 +13,11 @@ public class Hospital {
 
     @Override
     public String toString() {
-        return  "name='" + name + '\'' +
-                ", money=" + money +
-                ", specialities=" + specialities +
-                ", patientsWaiting=" + patientsWaiting +
-                ", doctors=" + doctors;
+        return  "name=" + name + '\'' +
+                "\n money=" + money +
+                "\n specialities=" + specialities +
+                "\n patientsWaiting=" + patientsWaiting +
+                "\n doctors=" + doctors;
     }
 
 
@@ -54,7 +54,7 @@ public class Hospital {
         }
         else{
             patientsWaiting.add(patient);
-            System.out.println("We do not such speciality");
+            System.out.println("We do not have such speciality");
         }
     }
     public String getName() {
