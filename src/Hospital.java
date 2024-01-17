@@ -29,7 +29,13 @@ public class Hospital {
         this.doctors = new ArrayList<>();
     }
     public void addSpeciality(String speciality){
-        specialities.add(speciality);
+        if(specialities.contains(speciality)){
+            System.out.println("The given speciality is already registered.");
+        }
+        else {
+            System.out.println(speciality + " has been registered");
+            specialities.add(speciality);
+        }
     }
 
     public boolean validSpeciality(String speciality){
