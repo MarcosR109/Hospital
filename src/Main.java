@@ -8,7 +8,7 @@ public class Main {
 
 
     public static void main(String[] args) {
-        Hospital SanPedro = new Hospital();
+        Hospital SanPedro = new Hospital("San Pedro");
         SanPedro.addSpeciality("Traumatology");
         SanPedro.addSpeciality("Cardiology");
         SanPedro.addSpeciality("Pulmonology");

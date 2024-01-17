@@ -21,8 +21,8 @@ public class Hospital {
     }
 
 
-    public Hospital() {
-        this.name = "Hospital";
+    public Hospital(String name) {
+        this.name =name;
         this.money = 0;
         this.specialities=new ArrayList<>();
         this.patientsWaiting =new ArrayList<>();
