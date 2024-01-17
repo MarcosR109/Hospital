@@ -1,6 +1,6 @@
 public class Patient {
-    String DNI,name,lastName,disease;
-    int SSN,age,phone;
+    String DNI,name,lastName,disease,SSN;
+    int age,phone;
 
     @Override
     public String toString() {
@@ -45,11 +45,11 @@ public class Patient {
         this.disease = disease;
     }
 
-    public int getSSN() {
+    public String getSSN() {
         return SSN;
     }
 
-    public void setSSN(int SSN) {
+    public void setSSN(String SSN) {
         this.SSN = SSN;
     }
 
@@ -69,7 +69,7 @@ public class Patient {
         this.phone = phone;
     }
 
-    public Patient(String DNI, String name, String lastName, String disease, int SSN, int age, int phone) {
+    public Patient(String DNI, String name, String lastName, String disease, String SSN, int age, int phone) {
         this.DNI = DNI;
         this.name = name;
         this.lastName = lastName;

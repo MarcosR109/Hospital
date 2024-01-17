@@ -2,16 +2,15 @@ public class Doctor {
     private String DNI,name,lastName,speciality;
     private int salary,age,phone;
 
-    @Override
+
     public String toString() {
-        return
-                "DNI=" + DNI + '\'' +
-                ", name='" + name + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", speciality='" + speciality + '\'' +
-                ", salary=" + salary +
-                ", age=" + age +
-                ", phone=" + phone;
+        return           ("DNI=" + DNI + '\'' +
+                        ", name=" + name + '\'' +
+                        ", lastName=" + lastName + '\'' +
+                        ", speciality=" + speciality + '\'' +
+                        ", salary=" + salary +
+                        ", age=" + age +
+                        ", phone=" + phone);
     }
 
     public Doctor(String DNI, String name, String lastName, String speciality, int salary, int age, int phone) {

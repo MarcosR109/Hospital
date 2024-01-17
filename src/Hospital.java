@@ -21,12 +21,15 @@ public class Hospital {
     }
 
 
-    public Hospital(ArrayList<String> specialities) {
+    public Hospital() {
         this.name = "Hospital";
         this.money = 0;
-        this.specialities=specialities;
+        this.specialities=new ArrayList<>();
         this.patientsWaiting =new ArrayList<>();
         this.doctors = new ArrayList<>();
+    }
+    public void addSpeciality(String speciality){
+        specialities.add(speciality);
     }
 
     public boolean validSpeciality(String speciality){
