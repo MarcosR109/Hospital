@@ -1,6 +1,6 @@
 public class Doctor {
-    private String DNI,name,lastName,speciality;
-    private int salary,age,phone;
+    private String DNI,name,lastName,speciality,phone;
+    private int salary,age;
 
 
     public String toString() {
@@ -13,7 +13,7 @@ public class Doctor {
                         "\n phone=" + phone);
     }
 
-    public Doctor(String DNI, String name, String lastName, String speciality, int salary, int age, int phone) {
+    public Doctor(String DNI, String name, String lastName, String speciality, int salary, int age, String  phone) {
         this.DNI = DNI;
         this.name = name;
         this.lastName = lastName;
@@ -71,11 +71,11 @@ public class Doctor {
         this.age = age;
     }
 
-    public int getPhone() {
+    public String  getPhone() {
         return phone;
     }
 
-    public void setPhone(int phone) {
+    public void setPhone(String  phone) {
         this.phone = phone;
     }
 }
