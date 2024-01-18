@@ -1,6 +1,5 @@
-import java.util.ArrayList;
-import java.util.Scanner;
-import java.util.WeakHashMap;
+import java.lang.reflect.Array;
+import java.util.*;
 
 public class Hospital {
     //Now we must create a new class called Hospital with the following attributes: name,
@@ -12,8 +11,7 @@ public class Hospital {
     ArrayList<String> specialities;
     ArrayList<Patient> patientsWaiting;
     ArrayList<Doctor> doctors;
-
-
+    HashMap <Doctor,HashSet> attendedPatients;
     @Override
     public String toString() {
         return "name=" + name + '\'' +
@@ -30,6 +28,7 @@ public class Hospital {
         this.specialities = new ArrayList<>();
         this.patientsWaiting = new ArrayList<>();
         this.doctors = new ArrayList<>();
+        this.attendedPatients=new HashMap<>();
     }
 
     public void addSpeciality(String speciality) {
@@ -46,7 +45,6 @@ public class Hospital {
     }
 
     public void addDoctor(Doctor dotor) {
-
         if (validSpeciality(dotor.getSpeciality()) && !registeredDoctorDNI(dotor.getDNI())) {
             doctors.add(dotor);
         } else System.out.println("We do not have licence for such speciality or the given DNI is already registered.");
@@ -131,6 +129,23 @@ public class Hospital {
         return null;
     }
 
+    public Doctor getDoctorFromDisease(String disease) {
+        for (Doctor doc : doctors) {
+            if (doc.getSpeciality().equals(disease)) {
+                return doc;
+            }
+        }
+        return null;
+    }
+
+    public boolean specilityDoctorFromDisease(String disease) {
+        for (Doctor doc : doctors) {
+            if (doc.getSpeciality().equals(disease))
+                return true;
+        }
+        return false;
+    }
+
 
     public boolean patientRegistered(String DNI) {
         for (Patient pat : patientsWaiting) {
@@ -148,6 +163,22 @@ public class Hospital {
         return null;
     }
 
+
+
+public void attendPatient(){
+        HashSet<Patient> hs = new HashSet<>();
+        Patient pat = patientsWaiting.get(0);
+        Doctor doc = getDoctorFromDisease(pat.getDisease());
+        if(specilityDoctorFromDisease(pat.getDisease())){
+            hs.add(pat);
+            attendedPatients.put(doc,hs);
+            patientsWaiting.remove(0);
+        }
+        else {
+        System.out.println("We cannot attend such speciality");
+    }
+    System.out.println(attendedPatients);
+}
     public void menu() {
 //1- Register patient
 //2- Register doctor
@@ -156,12 +187,13 @@ public class Hospital {
 //5- Show all patients
 //6- Show all doctors
 //7- Delete doctor
-//8 - Exit
+// 8- Attend a patient (this is the new option)
+// 9- Exit
         System.out.println("#########################");
         System.out.println("Choose an option: ");
         System.out.println("1 - Register patient");
         System.out.println("2 - Register doctor");
-        System.out.println("3 - modify patient");
+        System.out.println("3 - Modify patient");
         System.out.println("4 - Modify doctor");
         System.out.println("5 - Show all patients");
         System.out.println("6 - Show all doctors");
@@ -241,6 +273,9 @@ public class Hospital {
                 String DNI4 = sc.next();
                 if (doctorRegistered(DNI4)) {
                     doctors.remove(getDoctorFromDNI(DNI4));
+                } else {
+                    System.out.println("The given DNI is not registered");
+                    break;
                 }
                 System.out.print("Introduce first name: ");
                 String name4 = sc.next();
@@ -274,7 +309,6 @@ public class Hospital {
                     doctors.remove(getDoctorFromDNI(DNI7));
                 }
                 break;
-
             default:
                 flag = false;
         }
