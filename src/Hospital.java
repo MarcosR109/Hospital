@@ -262,7 +262,6 @@ public class Hospital {
                 break;
             case (5):
                 System.out.println(getPatientsWaiting());
-                sc.close();
                 break;
             case (6):
                 System.out.println(getDoctors());
@@ -279,10 +278,9 @@ public class Hospital {
             default:
                 flag = false;
         }
-        if (!flag){
+        if (!flag) {
             System.out.println("Bye!");
-        }
-        else menu();
+        } else menu();
     }
 }
 
