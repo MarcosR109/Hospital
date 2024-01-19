@@ -11,7 +11,10 @@ public class Hospital {
     ArrayList<String> specialities;
     ArrayList<Patient> patientsWaiting;
     ArrayList<Doctor> doctors;
-    HashMap <Doctor,HashSet> attendedPatients;
+    HashMap<Patient, Doctor> attendedPatients;
+
+    ArrayList<Patient> unatendendedPatients;
+
     @Override
     public String toString() {
         return "name=" + name + '\'' +
@@ -28,7 +31,8 @@ public class Hospital {
         this.specialities = new ArrayList<>();
         this.patientsWaiting = new ArrayList<>();
         this.doctors = new ArrayList<>();
-        this.attendedPatients=new HashMap<>();
+        this.attendedPatients = new HashMap<>();
+        unatendendedPatients = new ArrayList<>();
     }
 
     public void addSpeciality(String speciality) {
@@ -164,21 +168,20 @@ public class Hospital {
     }
 
 
-
-public void attendPatient(){
-        HashSet<Patient> hs = new HashSet<>();
+    public void attendPatient() {
         Patient pat = patientsWaiting.get(0);
-        Doctor doc = getDoctorFromDisease(pat.getDisease());
-        if(specilityDoctorFromDisease(pat.getDisease())){
-            hs.add(pat);
-            attendedPatients.put(doc,hs);
-            patientsWaiting.remove(0);
+        if (validSpeciality(pat.getDisease())) {
+            Doctor doc = getDoctorFromDisease(pat.getDisease());
+            if (specilityDoctorFromDisease(pat.getDisease())) {
+                attendedPatients.put(pat, doc);
+                patientsWaiting.remove(0);
+            } else {
+                System.out.println("We cannot attend such speciality");
+                unatendendedPatients.add(pat);
+            }
         }
-        else {
-        System.out.println("We cannot attend such speciality");
     }
-    System.out.println(attendedPatients);
-}
+
     public void menu() {
 //1- Register patient
 //2- Register doctor
@@ -198,7 +201,8 @@ public void attendPatient(){
         System.out.println("5 - Show all patients");
         System.out.println("6 - Show all doctors");
         System.out.println("7 - Delete doctor");
-        System.out.println("8 - Exit");
+        System.out.println("8 - Attend a patient");
+        System.out.println("9 - Exit");
         System.out.println("#########################");
         Scanner sc = new Scanner(System.in);
         int input = sc.nextInt();
@@ -301,7 +305,7 @@ public void attendPatient(){
             case (6):
                 System.out.println(getDoctors());
                 break;
-            case (7): //el default llama a case 7? se caerán bien macho
+            case (7):
                 System.out.println("Introduce DNI: ");
                 String DNI7 = sc.next();
                 if (doctorRegistered(DNI7)) {
@@ -309,6 +313,8 @@ public void attendPatient(){
                     doctors.remove(getDoctorFromDNI(DNI7));
                 }
                 break;
+            case(9):
+                attendPatient();
             default:
                 flag = false;
         }
