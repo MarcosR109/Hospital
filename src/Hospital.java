@@ -181,7 +181,41 @@ public class Hospital {
             }
         }
     }
+    public void getDoctorFromPatient(Doctor doc){
+        for(Patient pat: attendedPatients.keySet()){
+            if(attendedPatients.containsValue(doc) && attendedPatients.containsKey(pat)){
+                System.out.println(pat);
+            }
+        }
+    }
 
+    public void menuPatients(){
+        //1 - List of waiting patients
+        //2 - List of all attended patients
+        //3 - List of attended patients by a specific doctor (search by DNI).
+        //4.- Patients who have not been able to be treated
+        System.out.println("#########################");
+        System.out.println("Choose an option: ");
+        System.out.println("1 - List of waiting patients.");
+        System.out.println("2 - List of all atended patients.");
+        System.out.println("3 - List of attended patients by a specific doctor.");
+        System.out.println("4 - Patients who have not been able to be treated.");
+
+        Scanner sc = new Scanner(System.in);
+        int input = sc.nextInt();
+        switch (input){
+
+            case(1):
+                System.out.println(patientsWaiting);
+            case(2):
+                System.out.println(attendedPatients);
+            case(3):
+                System.out.println("Please introduce the doctor DNI: ");
+                String DNI = sc.next();
+                Doctor doc = getDoctorFromDNI(DNI);
+                getDoctorFromPatient(doc);
+        }
+    }
     public void menu() {
 //1- Register patient
 //2- Register doctor
