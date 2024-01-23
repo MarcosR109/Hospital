@@ -19,9 +19,9 @@ public class Main {
         SanPedro.addPatient(new Patient("84242421Q","Samuel","Loco","Pediatrics","252352352551",76,"658254353"));
         //System.out.println(SanPedro.getPatientsWaiting());
         //System.out.println(SanPedro);
-        //SanPedro.menu();
-        SanPedro.attendPatient();
-        SanPedro.attendPatient();
-        System.out.println(SanPedro.getPatientsWaiting());
+        SanPedro.menu();
+        //SanPedro.attendPatient();
+        //SanPedro.attendPatient();
+       // System.out.println(SanPedro.getPatientsWaiting());
     }
 }
