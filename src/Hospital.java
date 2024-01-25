@@ -5,15 +5,15 @@ public class Hospital {
     //Now we must create a new class called Hospital with the following attributes: name,
     //money, specialities (Array List), patientsWaiting (Array List) and doctors (Array List).
     //Don’t forget to add a constructor, getters, setters and toString() method.
-    static Scanner sc = new Scanner(System.in);
-    String name;
-    int money;
-    ArrayList<String> specialities;
-    ArrayList<Patient> patientsWaiting;
-    ArrayList<Doctor> doctors;
-    HashMap<Patient, Doctor> attendedPatients;
+    private static Scanner sc = new Scanner(System.in);
+    private String name;
+    private int money;
+    private ArrayList<String> specialities;
+    private ArrayList<Patient> patientsWaiting;
+    private ArrayList<Doctor> doctors;
+    private HashMap<Patient, Doctor> attendedPatients;
 
-    ArrayList<Patient> unatendendedPatients;
+    private ArrayList<Patient> unatendendedPatients;
 
     @Override
     public String toString() {
@@ -169,20 +169,25 @@ public class Hospital {
 
 
     public void attendPatient() {
-        Patient pat = patientsWaiting.get(0);
-        if (validSpeciality(pat.getDisease())) {
-            Doctor doc = getDoctorFromDisease(pat.getDisease());
-            if (specilityDoctorFromDisease(pat.getDisease())) {
-                attendedPatients.put(pat, doc);
-                patientsWaiting.remove(0);
-            } else {
-                System.out.println("We cannot attend such speciality");
-                unatendendedPatients.add(pat);
+        if (!patientsWaiting.isEmpty()) {
+            Patient pat = patientsWaiting.get(0);
+            if (validSpeciality(pat.getDisease())) {
+                Doctor doc = getDoctorFromDisease(pat.getDisease());
+                if (specilityDoctorFromDisease(pat.getDisease())) {
+                    attendedPatients.put(pat, doc);
+                    patientsWaiting.remove(0);
+                    System.out.println("The patient " + pat.getName() + " " + pat.getLastName() + " has been attended.");
+                } else {
+                    System.out.println("We cannot attend such speciality " + pat.getName() + " " + pat.getLastName() + " has been moved into the unattended patients list.");
+                    patientsWaiting.remove(0);
+                    unatendendedPatients.add(pat);
+                }
             }
         }
+        else System.out.println("We have attended all of our patients.");
     }
-
-    public void getDoctorFromPatient(Doctor doc) {
+    public void printDoctorFromPatient(Doctor doc) {
+        System.out.println("The doctor " + doc.getName() + " " + doc.getLastName() + " has attended : ");
         for (Patient pat : attendedPatients.keySet()) {
             if (attendedPatients.containsValue(doc) && attendedPatients.containsKey(pat)) {
                 System.out.println(pat);
@@ -195,7 +200,7 @@ public class Hospital {
         //2 - List of all attended patients
         //3 - List of attended patients by a specific doctor (search by DNI).
         //4.- Patients who have not been able to be treated
-        boolean flag = true;
+
         System.out.println("#########################");
         System.out.println("Choose an option: ");
         System.out.println("1 - List of waiting patients.");
@@ -207,30 +212,44 @@ public class Hospital {
         int input = Integer.parseInt(sc.nextLine());
         switch (input) {
             case (1):
-                System.out.println(patientsWaiting);
+                if (patientsWaiting.isEmpty()){
+                    System.out.println("We don't have any patient waiting. ");
+                }
+                else {
+                    System.out.println(patientsWaiting);
+                }
                 break;
             case (2):
-                System.out.println(attendedPatients.keySet());
+                if(attendedPatients.isEmpty()){
+                    System.out.println("We haven't attended any patient yet. ");
+                }
+                else  {
+                    System.out.println(attendedPatients.keySet());
+                }
                 break;
             case (3):
                 System.out.println("Please introduce the doctor DNI: ");
-                String DNI = sc.next();
+                String DNI = sc.nextLine();
                 Doctor doc = getDoctorFromDNI(DNI);
                 if (attendedPatients.containsValue(doc)) {
-                    getDoctorFromPatient(doc);
+                    printDoctorFromPatient(doc);
                 } else System.out.println("The given doctor hasn't attended any patient. ");
                 break;
             case (4):
-                System.out.println(unatendendedPatients);
+                if (unatendendedPatients.isEmpty()){
+                    System.out.println("We don't have any unattended patient");
+                }
+                else {
+                    System.out.println(unatendendedPatients);
+                }
                 break;
             default:
-                flag = false;
                 break;
         }
     }
 
 
-        public void menu () {
+    public void menu() {
 //1- Register patient
 //2- Register doctor
 //3- Modify patient
@@ -240,136 +259,164 @@ public class Hospital {
 //7- Delete doctor
 // 8- Attend a patient (this is the new option)
 // 9- Exit
-            System.out.println("#########################");
-            System.out.println("Choose an option: ");
-            System.out.println("1 - Register patient");
-            System.out.println("2 - Register doctor");
-            System.out.println("3 - Modify patient");
-            System.out.println("4 - Modify doctor");
-            System.out.println("5 - Show all patients");
-            System.out.println("6 - Show all doctors");
-            System.out.println("7 - Delete doctor");
-            System.out.println("8 - Attend a patient");
-            System.out.println("9 - Exit");
-            System.out.println("#########################");
-            int input = Integer.parseInt(sc.nextLine());
-            boolean flag = true;
-            switch (input) {
-                case (1):
-                    System.out.print("Introduce DNI: ");
-                    String DNI = sc.next();
-                    System.out.print("Introduce first name: ");
-                    String name = sc.next();
-                    System.out.print("Introduce last name: ");
-                    String lastName = sc.next();
-                    System.out.print("Introduce disease: ");
-                    String disease = sc.next();
-                    System.out.print("Introduce SSN: ");
-                    String ssn = sc.next();
-                    System.out.print("Introduce age: ");
-                    int age = sc.nextInt();
-                    System.out.print("Introduce phone: ");
-                    String phone = sc.next();
-                    Patient p1 = new Patient(DNI, name, lastName, disease, ssn, age, phone);
-                    addPatient(p1);
-                    System.out.println("Patient " + p1.getName() + " " + p1.getLastName() + " has been registered.");
-                    break;
-                case (2):
-                    System.out.print("Introduce DNI: ");
-                    String DNID = sc.next();
-                    System.out.print("Introduce first name: ");
-                    String nameD = sc.next();
-                    System.out.print("Introduce last name: ");
-                    String lastNameD = sc.next();
-                    System.out.print("Introduce speciality: ");
-                    String speciality = sc.next();
-                    System.out.print("Introduce salary: ");
-                    int salary = sc.nextInt();
-                    System.out.print("Introduce age: ");
-                    int ageD = sc.nextInt();
-                    System.out.print("Introduce phone: ");
-                    String phoneD = sc.next();
-                    Doctor d1 = new Doctor(DNID, nameD, lastNameD, speciality, salary, ageD, phoneD);
-                    if (validSpeciality(speciality)) {
-                        System.out.println("Doctor " + nameD + " " + lastNameD + " has been registered.");
-                        addDoctor(d1);
-                    }
-                    break;
-                case (3): //modificar paciente
-                    System.out.print("Introduce DNI: ");
-                    String DNI3 = sc.next();
-                    if (patientRegistered(DNI3)) {
-                        patientsWaiting.remove(getPatientFromDNI(DNI3));
-                    } else {
-                        System.out.println("The given DNI is not registered");
-                        break;
-                    }
-                    System.out.print("Introduce first name: ");
-                    String name3 = sc.next();
-                    System.out.print("Introduce last name: ");
-                    String lastName3 = sc.next();
-                    System.out.print("Introduce disease: ");
-                    String dis3 = sc.next();
-                    System.out.print("Introduce SSN: ");
-                    String ssn3 = sc.next();
-                    System.out.print("Introduce age: ");
-                    int age3 = sc.nextInt();
-                    System.out.print("Introduce phone: ");
-                    String phone3 = sc.next();
-                    Patient p3 = new Patient(DNI3, name3, lastName3, dis3, ssn3, age3, phone3);
-                    patientsWaiting.add(p3);
-                    break;
-                case (4)://Modificar doctor
-                    System.out.print("Introduce DNI: ");
-                    String DNI4 = sc.next();
-                    if (doctorRegistered(DNI4)) {
-                        doctors.remove(getDoctorFromDNI(DNI4));
-                    } else {
-                        System.out.println("The given DNI is not registered");
-                        break;
-                    }
-                    System.out.print("Introduce first name: ");
-                    String name4 = sc.next();
-                    System.out.print("Introduce last name: ");
-                    String lastName4 = sc.next();
-                    System.out.print("Introduce speciality: ");
-                    String dis4 = sc.next();
-                    System.out.print("Introduce salary: ");
-                    int ssn4 = sc.nextInt();
-                    System.out.print("Introduce age: ");
-                    int age4 = sc.nextInt();
-                    System.out.print("Introduce phone: ");
-                    String phone4 = sc.next();
-                    if (validSpeciality(dis4)) {
-                        Doctor d4 = new Doctor(DNI4, name4, lastName4, dis4, ssn4, age4, phone4);
-                        System.out.println("Doctor" + name4 + " " + lastName4 + " profile has been modified.");
-                        doctors.add(d4);
-                    }
-                    break;
-                case (5):
-                    menuPatients();
-                    break;
-                case (6):
-                    System.out.println(getDoctors());
-                    break;
-                case (7):
-                    System.out.println("Introduce DNI: ");
-                    String DNI7 = sc.next();
-                    if (doctorRegistered(DNI7)) {
-                        System.out.println("Doctor " + getDoctorFromDNI(DNI7).getName() + " has been removed.");
-                        doctors.remove(getDoctorFromDNI(DNI7));
-                    }
-                    break;
-                case (8):
-                    attendPatient();
-                    break;
-                default:
-                    flag = false;
-                    break;
+        System.out.println("#########################");
+        System.out.println("Choose an option: ");
+        System.out.println("1 - Register patient");
+        System.out.println("2 - Register doctor");
+        System.out.println("3 - Modify patient");
+        System.out.println("4 - Modify doctor");
+        System.out.println("5 - Show all patients");
+        System.out.println("6 - Show all doctors");
+        System.out.println("7 - Delete doctor");
+        System.out.println("8 - Attend a patient");
+        System.out.println("9 - Exit");
+        System.out.println("#########################");
+        String input = sc.nextLine();
+        boolean flag = true;
+        switch (input) {
+            case ("1"):
+                registerPatient();
+                break;
+            case ("2"):
+                registerDoctor();
+                break;
+            case ("3"): //modificar paciente
+                modifyPatient();
+                break;
+            case ("4")://Modificar doctor
+                modifyDoctor();
+                break;
+            case ("5"):
+                menuPatients();
+                break;
+            case ("6"):
+                System.out.println(getDoctors());
+                break;
+            case ("7"):
+                System.out.println("Introduce DNI: ");
+                String DNI7 = sc.nextLine();
+                if (doctorRegistered(DNI7)) {
+                    System.out.println("Doctor " + getDoctorFromDNI(DNI7).getName() +" "+getDoctorFromDNI(DNI7).getLastName() +  " has been removed.");
+                    doctors.remove(getDoctorFromDNI(DNI7));
+                } else System.out.println("The given DNI is not registered.");
+                break;
+            case ("8"):
+                attendPatient();
+                break;
+            case ("9"):
+                flag = false;
+                break;
+            default:
+                flag=false;
+                break;
+        }
+        if(flag)
+    {
+        menu();
+    } else
+    {
+        System.out.println("Bye!");
+    }
+
+}
+
+    private void modifyDoctor() {
+        System.out.print("Introduce DNI: ");
+        String DNI4 = sc.nextLine();
+        if (doctorRegistered(DNI4)) {
+            doctors.remove(getDoctorFromDNI(DNI4));
+        } else {
+            System.out.println("The given DNI is not registered");
+            System.out.print("Introduce first name: ");
+            String name4 = sc.nextLine();
+            System.out.print("Introduce last name: ");
+            String lastName4 = sc.nextLine();
+            System.out.print("Introduce speciality: ");
+            String dis4 = sc.nextLine();
+            System.out.print("Introduce salary: ");
+            int ssn4 = sc.nextInt();
+            sc.nextLine();
+            System.out.print("Introduce age: ");
+            int age4 = sc.nextInt();
+            sc.nextLine();
+            System.out.print("Introduce phone: ");
+            String phone4 = sc.nextLine();
+            if (validSpeciality(dis4)) {
+                Doctor d4 = new Doctor(DNI4, name4, lastName4, dis4, ssn4, age4, phone4);
+                System.out.println("Doctor" + name4 + " " + lastName4 + " profile has been modified.");
+                doctors.add(d4);
             }
-            if (!flag){
-                System.out.println("Bye!");
-            } else menu();
         }
     }
+
+    private void registerPatient() {
+        System.out.print("Introduce DNI: ");
+        String DNI = sc.nextLine();
+        System.out.print("Introduce first name: ");
+        String name = sc.nextLine();
+        System.out.print("Introduce last name: ");
+        String lastName = sc.nextLine();
+        System.out.print("Introduce disease: ");
+        String disease = sc.nextLine();
+        System.out.print("Introduce SSN: ");
+        String ssn = sc.nextLine();
+        System.out.print("Introduce age: ");
+        int age = sc.nextInt();
+        sc.nextLine();
+        System.out.print("Introduce phone: ");
+        String phone = sc.nextLine();
+        Patient p1 = new Patient(DNI, name, lastName, disease, ssn, age, phone);
+        addPatient(p1);
+        System.out.println("Patient " + p1.getName() + " " + p1.getLastName() + " has been registered.");
+    }
+
+    private void modifyPatient() {
+        System.out.print("Introduce DNI: ");
+        String DNI3 = sc.nextLine();
+        if (patientRegistered(DNI3)) {
+            patientsWaiting.remove(getPatientFromDNI(DNI3));
+            System.out.print("Introduce first name: ");
+            String name3 = sc.nextLine();
+            System.out.print("Introduce last name: ");
+            String lastName3 = sc.nextLine();
+            System.out.print("Introduce disease: ");
+            String dis3 = sc.nextLine();
+            System.out.print("Introduce SSN: ");
+            String ssn3 = sc.nextLine();
+            System.out.print("Introduce age: ");
+            int age3 = sc.nextInt();
+            sc.nextLine();
+            System.out.print("Introduce phone: ");
+            String phone3 = sc.nextLine();
+            Patient p3 = new Patient(DNI3, name3, lastName3, dis3, ssn3, age3, phone3);
+            patientsWaiting.add(p3);
+        } else {
+            System.out.println("The given DNI is not registered");
+        }
+    }
+
+    private void registerDoctor() {
+        System.out.print("Introduce DNI: ");
+        String DNID = sc.nextLine();
+        System.out.print("Introduce first name: ");
+        String nameD = sc.nextLine();
+        System.out.print("Introduce last name: ");
+        String lastNameD = sc.nextLine();
+        System.out.print("Introduce speciality: ");
+        String speciality = sc.nextLine();
+        System.out.print("Introduce salary: ");
+        int salary = sc.nextInt();
+        sc.nextLine();
+        System.out.print("Introduce age: ");
+        int ageD = sc.nextInt();
+        sc.nextLine();
+        System.out.print("Introduce phone: ");
+        String phoneD = sc.nextLine();
+        Doctor d1 = new Doctor(DNID, nameD, lastNameD, speciality, salary, ageD, phoneD);
+        if (validSpeciality(speciality)) {
+            System.out.println("Doctor " + nameD + " " + lastNameD + " has been registered.");
+            addDoctor(d1);
+        }
+    }
+}
 
