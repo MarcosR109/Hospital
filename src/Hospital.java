@@ -1,3 +1,4 @@
+import java.lang.invoke.SwitchPoint;
 import java.lang.reflect.Array;
 import java.util.*;
 
@@ -13,15 +14,15 @@ public class Hospital {
     private ArrayList<Doctor> doctors;
     private HashMap<Patient, Doctor> attendedPatients;
 
-    private ArrayList<Patient> unatendendedPatients;
+    private ArrayList<Patient> unattendendedPatients;
 
     @Override
     public String toString() {
-        return "name=" + name + '\'' +
-                "\n money=" + money +
-                "\n specialities=" + specialities +
-                "\n patientsWaiting=" + patientsWaiting +
-                "\n doctors=" + doctors;
+        return "Name-> " + name + '\'' +
+                "\n Money-> " + money +
+                "\n Specialities-> " + specialities +
+                "\n Patients waiting-> " + patientsWaiting +
+                "\n Doctors-> " + doctors;
     }
 
 
@@ -32,7 +33,7 @@ public class Hospital {
         this.patientsWaiting = new ArrayList<>();
         this.doctors = new ArrayList<>();
         this.attendedPatients = new HashMap<>();
-        unatendendedPatients = new ArrayList<>();
+        unattendendedPatients = new ArrayList<>();
     }
 
     public void addSpeciality(String speciality) {
@@ -150,6 +151,35 @@ public class Hospital {
         return false;
     }
 
+    //https://www.baeldung.com/java-check-string-number
+    //Método isNumeric
+    private boolean isNumeric(String str) {
+            if (str == null) {
+                return false;
+            }
+            try {
+                double d = Double.parseDouble(str);
+            } catch (NumberFormatException nfe) {
+                return false;
+            }
+            return true;
+    }
+    //At this moment, it's the time to create new validations when we enter data. For
+//example:
+//• DNI must be 9 characters (8 numbers following by 1 letter)
+//• SSN must be 12 digits
+//• Age mut be positive and smaller than 150
+//• Phone Number must be 9 digits starting with 6, 7, 8, or 9.
+//• ,... In case of error, the system must show the corresponding error message
+//and a message explaining the correct format.
+//Imagine how your program can be broken: phones, empty waiting patients, empty
+//data, duplicated DNIs, duplicated specialities... and make the corresponding checks
+//and modifications in your program.
+    //https://www.w3api.com/Java/Character/isLetter/
+    //MÉTODO Character.isLetter()
+    public boolean validDNI(String DNI) {
+        return DNI.length() == 9 && isNumeric(DNI.substring(0, 8)) && Character.isLetter(DNI.charAt(8));
+    }
 
     public boolean patientRegistered(String DNI) {
         for (Patient pat : patientsWaiting) {
@@ -178,14 +208,14 @@ public class Hospital {
                     patientsWaiting.remove(0);
                     System.out.println("The patient " + pat.getName() + " " + pat.getLastName() + " has been attended.");
                 } else {
-                    System.out.println("We cannot attend such speciality " + pat.getName() + " " + pat.getLastName() + " has been moved into the unattended patients list.");
+                    System.out.println("We cannot attend " + pat.getDisease() + "," + pat.getName() + " " + pat.getLastName() + " has been moved into the unattended patients list.");
                     patientsWaiting.remove(0);
-                    unatendendedPatients.add(pat);
+                    unattendendedPatients.add(pat);
                 }
             }
-        }
-        else System.out.println("We have attended all of our patients.");
+        } else System.out.println("We have attended all of our patients.");
     }
+
     public void printDoctorFromPatient(Doctor doc) {
         System.out.println("The doctor " + doc.getName() + " " + doc.getLastName() + " has attended : ");
         for (Patient pat : attendedPatients.keySet()) {
@@ -212,18 +242,16 @@ public class Hospital {
         int input = Integer.parseInt(sc.nextLine());
         switch (input) {
             case (1):
-                if (patientsWaiting.isEmpty()){
+                if (patientsWaiting.isEmpty()) {
                     System.out.println("We don't have any patient waiting. ");
-                }
-                else {
+                } else {
                     System.out.println(patientsWaiting);
                 }
                 break;
             case (2):
-                if(attendedPatients.isEmpty()){
+                if (attendedPatients.isEmpty()) {
                     System.out.println("We haven't attended any patient yet. ");
-                }
-                else  {
+                } else {
                     System.out.println(attendedPatients.keySet());
                 }
                 break;
@@ -236,11 +264,10 @@ public class Hospital {
                 } else System.out.println("The given doctor hasn't attended any patient. ");
                 break;
             case (4):
-                if (unatendendedPatients.isEmpty()){
+                if (unattendendedPatients.isEmpty()) {
                     System.out.println("We don't have any unattended patient");
-                }
-                else {
-                    System.out.println(unatendendedPatients);
+                } else {
+                    System.out.println(unattendendedPatients);
                 }
                 break;
             default:
@@ -259,6 +286,20 @@ public class Hospital {
 //7- Delete doctor
 // 8- Attend a patient (this is the new option)
 // 9- Exit
+//PART 6 – COMPLETING THE MENU
+//Let´s complete de menu. Before the options it must appear this:
+//WELCOME TO 'HOSPITAL_NAME'
+//NOW THERE ARE 'N' DOCTORS AND 'M' SATISFIED PATIENTS
+//In the place of n and m should show the corresponding numbers. The satisfied
+//patients are the attend patients.
+//PART 7 – NEW SPECIALITY
+//Now we're going to suppose that in our hospital we're ready to attend a new
+//speciality. So, we must add a new menu option.
+//10- New speciality
+//11- Exit
+//Once you implement it, you must test that after adding a new Speciality, we can add
+//a new doctor with this speciality and we can attend a new patient with that disease.
+        System.out.println("Welcome to the hospital " + getName() + " we now have " + doctors.size() + " doctors and " + attendedPatients.size() + " satisfied patients.");
         System.out.println("#########################");
         System.out.println("Choose an option: ");
         System.out.println("1 - Register patient");
@@ -269,7 +310,9 @@ public class Hospital {
         System.out.println("6 - Show all doctors");
         System.out.println("7 - Delete doctor");
         System.out.println("8 - Attend a patient");
-        System.out.println("9 - Exit");
+        System.out.println("9 - Info specialities");
+        System.out.println("10 - New speciality");
+        System.out.println("11 - Exit");
         System.out.println("#########################");
         String input = sc.nextLine();
         boolean flag = true;
@@ -296,7 +339,7 @@ public class Hospital {
                 System.out.println("Introduce DNI: ");
                 String DNI7 = sc.nextLine();
                 if (doctorRegistered(DNI7)) {
-                    System.out.println("Doctor " + getDoctorFromDNI(DNI7).getName() +" "+getDoctorFromDNI(DNI7).getLastName() +  " has been removed.");
+                    System.out.println("Doctor " + getDoctorFromDNI(DNI7).getName() + " " + getDoctorFromDNI(DNI7).getLastName() + " has been removed.");
                     doctors.remove(getDoctorFromDNI(DNI7));
                 } else System.out.println("The given DNI is not registered.");
                 break;
@@ -304,21 +347,84 @@ public class Hospital {
                 attendPatient();
                 break;
             case ("9"):
-                flag = false;
+                showSpecialitiesMenu();
+            case ("10"):
+                System.out.println("Introduce speciality : ");
+                String sp = sc.nextLine();
+                if (specialities.contains(sp))
+                    System.out.println("The given speciality is already registered.");
+                else {
+                    addSpeciality(sp);
+                    System.out.println("Speciality " + sp + " has been registered.");
+                }
                 break;
             default:
-                flag=false;
+                flag = false;
                 break;
         }
-        if(flag)
-    {
-        menu();
-    } else
-    {
-        System.out.println("Bye!");
+
+
+        if (flag) {
+            menu();
+        } else {
+            System.out.println("Bye!");
+        }
     }
 
-}
+    //PART 5 – SPECIALITIES
+    //We're going to add a new option to our app to display info about specialities:
+    //9 - Info specialities [Info]
+    //10- Exit
+    //If the user chooses this option, it must display a submenu with the following options:
+    //1 - List of specialities attended by our doctors
+    //2 - List of specialities not covered with unattended patients
+    //3 - Exit.
+    //First option will display all the specialities covered at our hospital and which doctor
+    //works in each of them and second option will display all the specialities not covered
+    //in our hospital with unattended patients.
+    private void showSpecialitiesMenu() {
+        System.out.println("Choose an option: ");
+        System.out.println("1 - List of specialities attended by our doctors.");
+        System.out.println("2 - List of specialities not covered with unattended patients.");
+        System.out.println("3 - Exit.");
+        boolean flag = true;
+        String input = sc.nextLine();
+        switch (input) {
+            case "1":
+                showDoctorSpecialities();
+                break;
+            case "2":
+                showUnattendedPatientsDiseases();
+                break;
+            default:
+                flag = false;
+                break;
+        }
+        if (flag) showSpecialitiesMenu();
+        else menu();
+    }
+
+    private void showUnattendedPatientsDiseases() {
+        if (unattendendedPatients.isEmpty()) {
+            System.out.println("We don't have any unattended patient");
+        } else {
+            System.out.println("These are the diseases of our unattended patients: ");
+            for (Patient pat : unattendendedPatients) {
+                System.out.println(pat.getDisease());
+            }
+        }
+    }
+
+    private void showDoctorSpecialities() {
+        if (doctors.isEmpty()) {
+            System.out.println("We don't have any registered doctor.");
+        } else {
+            System.out.println("These are the specialities of our doctors: ");
+            for (Doctor doc : doctors) {
+                System.out.println(doc.getSpeciality());
+            }
+        }
+    }
 
     private void modifyDoctor() {
         System.out.print("Introduce DNI: ");
@@ -418,5 +524,7 @@ public class Hospital {
             addDoctor(d1);
         }
     }
+
+
 }
 
