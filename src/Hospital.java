@@ -153,6 +153,9 @@ public class Hospital {
 
     //https://www.baeldung.com/java-check-string-number
     //Método isNumeric
+    //Recomiendan hacer este método para solucionar la comprobación de dígitos. Si no se hace con try y catch daría el error NumberFormatException
+    //al intentar hacer parse al double.
+    //Así que a través del catch conseguimos que el método devuelva un booleano, también comprueba que el String no está vacío.
     private boolean isNumeric(String str) {
             if (str == null) {
                 return false;
