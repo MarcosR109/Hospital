@@ -157,16 +157,17 @@ public class Hospital {
     //al intentar hacer parse al double.
     //Así que a través del catch conseguimos que el método devuelva un booleano, también comprueba que el String no está vacío.
     private boolean isNumeric(String str) {
-            if (str == null) {
-                return false;
-            }
-            try {
-                double d = Double.parseDouble(str);
-            } catch (NumberFormatException nfe) {
-                return false;
-            }
-            return true;
+        if (str == null) {
+            return false;
+        }
+        try {
+            double d = Double.parseDouble(str);
+        } catch (NumberFormatException nfe) {
+            return false;
+        }
+        return true;
     }
+
     //At this moment, it's the time to create new validations when we enter data. For
 //example:
 //• DNI must be 9 characters (8 numbers following by 1 letter)
@@ -261,10 +262,16 @@ public class Hospital {
             case (3):
                 System.out.println("Please introduce the doctor DNI: ");
                 String DNI = sc.nextLine();
-                Doctor doc = getDoctorFromDNI(DNI);
-                if (attendedPatients.containsValue(doc)) {
-                    printDoctorFromPatient(doc);
-                } else System.out.println("The given doctor hasn't attended any patient. ");
+                if (validDNI(DNI)) {
+                    Doctor doc = getDoctorFromDNI(DNI);
+                    if (attendedPatients.containsValue(doc)) {
+                        printDoctorFromPatient(doc);
+                    } else if (registeredDoctorDNI(DNI)) {
+                        System.out.println("The given doctor hasn't attended any patient. ");
+                    } else System.out.println("The given DNI is not registered.");
+                } else {
+                    System.out.println("The given DNI is not valid. Please introduce a sequence of 8 numbers followed by a letter.");
+                }
                 break;
             case (4):
                 if (unattendendedPatients.isEmpty()) {
@@ -341,10 +348,14 @@ public class Hospital {
             case ("7"):
                 System.out.println("Introduce DNI: ");
                 String DNI7 = sc.nextLine();
-                if (doctorRegistered(DNI7)) {
-                    System.out.println("Doctor " + getDoctorFromDNI(DNI7).getName() + " " + getDoctorFromDNI(DNI7).getLastName() + " has been removed.");
-                    doctors.remove(getDoctorFromDNI(DNI7));
-                } else System.out.println("The given DNI is not registered.");
+                if (validDNI(DNI7)) {
+                    if (doctorRegistered(DNI7)) {
+                        System.out.println("Doctor " + getDoctorFromDNI(DNI7).getName() + " " + getDoctorFromDNI(DNI7).getLastName() + " has been removed.");
+                        doctors.remove(getDoctorFromDNI(DNI7));
+                    } else System.out.println("The given DNI is not registered.");
+                } else {
+                    System.out.println("The given DNI is not valid. Please introduce a sequence of 8 numbers followed by a letter.");
+                }
                 break;
             case ("8"):
                 attendPatient();
@@ -432,51 +443,58 @@ public class Hospital {
     private void modifyDoctor() {
         System.out.print("Introduce DNI: ");
         String DNI4 = sc.nextLine();
-        if (doctorRegistered(DNI4)) {
-            doctors.remove(getDoctorFromDNI(DNI4));
-        } else {
-            System.out.println("The given DNI is not registered");
-            System.out.print("Introduce first name: ");
-            String name4 = sc.nextLine();
-            System.out.print("Introduce last name: ");
-            String lastName4 = sc.nextLine();
-            System.out.print("Introduce speciality: ");
-            String dis4 = sc.nextLine();
-            System.out.print("Introduce salary: ");
-            int ssn4 = sc.nextInt();
-            sc.nextLine();
-            System.out.print("Introduce age: ");
-            int age4 = sc.nextInt();
-            sc.nextLine();
-            System.out.print("Introduce phone: ");
-            String phone4 = sc.nextLine();
-            if (validSpeciality(dis4)) {
-                Doctor d4 = new Doctor(DNI4, name4, lastName4, dis4, ssn4, age4, phone4);
-                System.out.println("Doctor" + name4 + " " + lastName4 + " profile has been modified.");
-                doctors.add(d4);
+        if (validDNI(DNI4)) {
+            if (doctorRegistered(DNI4)) {
+                System.out.print("Introduce first name: ");
+                String name4 = sc.nextLine();
+                System.out.print("Introduce last name: ");
+                String lastName4 = sc.nextLine();
+                System.out.print("Introduce speciality: ");
+                String dis4 = sc.nextLine();
+                System.out.print("Introduce salary: ");
+                int ssn4 = sc.nextInt();
+                sc.nextLine();
+                System.out.print("Introduce age: ");
+                int age4 = sc.nextInt();
+                sc.nextLine();
+                System.out.print("Introduce phone: ");
+                String phone4 = sc.nextLine();
+                if (validSpeciality(dis4)) {
+                    Doctor d4 = new Doctor(DNI4, name4, lastName4, dis4, ssn4, age4, phone4);
+                    System.out.println("Doctor" + name4 + " " + lastName4 + " profile has been modified.");
+                    doctors.add(d4);
+                    doctors.remove(getDoctorFromDNI(DNI4));
+                }
+                else System.out.println("The given speciality is not registered.");
+            } else {
+                System.out.println("The given DNI is not registered");
+
             }
-        }
+        } else System.out.println("The given DNI is not valid. Please introduce a sequence of 8 numbers followed by a letter.");
     }
 
     private void registerPatient() {
         System.out.print("Introduce DNI: ");
         String DNI = sc.nextLine();
-        System.out.print("Introduce first name: ");
-        String name = sc.nextLine();
-        System.out.print("Introduce last name: ");
-        String lastName = sc.nextLine();
-        System.out.print("Introduce disease: ");
-        String disease = sc.nextLine();
-        System.out.print("Introduce SSN: ");
-        String ssn = sc.nextLine();
-        System.out.print("Introduce age: ");
-        int age = sc.nextInt();
-        sc.nextLine();
-        System.out.print("Introduce phone: ");
-        String phone = sc.nextLine();
-        Patient p1 = new Patient(DNI, name, lastName, disease, ssn, age, phone);
-        addPatient(p1);
-        System.out.println("Patient " + p1.getName() + " " + p1.getLastName() + " has been registered.");
+        if (validDNI(DNI)) {
+            System.out.print("Introduce first name: ");
+            String name = sc.nextLine();
+            System.out.print("Introduce last name: ");
+            String lastName = sc.nextLine();
+            System.out.print("Introduce disease: ");
+            String disease = sc.nextLine();
+            System.out.print("Introduce SSN: ");
+            String ssn = sc.nextLine();
+            System.out.print("Introduce age: ");
+            int age = sc.nextInt();
+            sc.nextLine();
+            System.out.print("Introduce phone: ");
+            String phone = sc.nextLine();
+            Patient p1 = new Patient(DNI, name, lastName, disease, ssn, age, phone);
+            addPatient(p1);
+            System.out.println("Patient " + p1.getName() + " " + p1.getLastName() + " has been registered.");
+        }
+        else System.out.println("The given DNI is not valid. Please introduce a sequence of 8 numbers followed by a letter.");
     }
 
     private void modifyPatient() {
