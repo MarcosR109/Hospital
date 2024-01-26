@@ -21,6 +21,7 @@ public class Main {
         //System.out.println(SanPedro.getPatientsWaiting());
         //System.out.println(SanPedro);
         SanPedro.menu();
+        System.out.println(SanPedro.validDNI("53532512X"));
         //SanPedro.attendPatient();
         //SanPedro.attendPatient();
        // System.out.println(SanPedro.getPatientsWaiting());

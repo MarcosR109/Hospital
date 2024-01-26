@@ -4,13 +4,13 @@ public class Patient {
 
     @Override
     public String toString() {
-        return  "DNI='" + DNI + '\'' +
-                "\n name='" + name + '\'' +
-                "\n lastName='" + lastName + '\'' +
-                "\n disease='" + disease + '\'' +
-                "\n SSN=" + SSN +
-                "\n age=" + age +
-                "\n phone=" + phone;
+        return  "DNI-> " + DNI + '\'' +
+                "\n name-> " + name + '\'' +
+                "\n Last name-> " + lastName + '\'' +
+                "\n Disease-> " + disease + '\'' +
+                "\n SSN-> " + SSN +
+                "\n Age-> " + age +
+                "\n Phone-> " + phone;
     }
 
     public String getDNI() {
