@@ -16,7 +16,7 @@ public class Main {
         //System.out.println(SanPedro);
         SanPedro.addPatient(new Patient("53532512X","Marta","Mar","Traumatology","64564644964",65,"658654659"));
         SanPedro.addPatient(new Patient("84229441T","Paca","Ful","Traumatology","645116644964",20,"658211659"));
-        SanPedro.addPatient(new Patient("84229441T","Paca","Ful","Dermatology","645116644964",20,"658211659"));
+//        SanPedro.addPatient(new Patient("84229441T","Paca","Ful","Dermatology","645116644964",20,"658211659"));
         SanPedro.addPatient(new Patient("84242421Q","Samuel","Loco","Pediatrics","252352352551",76,"658254353"));
         //System.out.println(SanPedro.getPatientsWaiting());
         //System.out.println(SanPedro);
