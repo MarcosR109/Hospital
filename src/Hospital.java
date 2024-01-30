@@ -1,5 +1,4 @@
-import java.lang.invoke.SwitchPoint;
-import java.lang.reflect.Array;
+
 import java.util.*;
 
 public class Hospital {
@@ -43,6 +42,10 @@ public class Hospital {
         specialities.add(speciality);
     }
 
+    private boolean validAge(int age) {
+        return age > 0 && age < 150;
+    }
+
     public boolean validSpeciality(String speciality) {
         for (String sp : specialities) {
             if (sp.equals(speciality)) {
@@ -58,31 +61,46 @@ public class Hospital {
 
     public void addDoctor(Doctor dotor) {
         if (validDNI(dotor.getDNI())) {
-            if (!checkDNI(dotor.getDNI())) {
-                if (validSpeciality(dotor.getSpeciality())) {
-                    doctors.add(dotor);
-                    DNIlist.add(dotor.getDNI());
-                } else System.out.println("We do not have licence for such speciality.");
-            } else System.out.println("The given DNI is already registered.");
-        } else
-            System.out.println("The given DNI is not valid. Please introduce a sequence of 8 numbers followed by a letter.");
+            if (validAge(dotor.getAge())) {
+                if (validPhone(dotor.getPhone())) {
+                    if (!checkDNI(dotor.getDNI())) {
+                        if (validSpeciality(dotor.getSpeciality())) {
+                            doctors.add(dotor);
+                            DNIlist.add(dotor.getDNI());
+                        } else System.out.println("We do not have licence for such speciality.");
+                    } else System.out.println("The given DNI is already registered.");
+                } else System.out.println("The phone must have 9 digit and start with 6,7,8 or 9");
+            } else System.out.println("The age must be positive and below 150");
+        } else System.out.println("The given DNI is not valid. Please introduce a sequence of 8 numbers followed by a letter.");
     }
 
     public void addPatient(Patient patient) {
         if (validDNI(patient.getDNI())) {
-            if (!checkDNI(patient.getDNI())) {
-                if (validSpeciality(patient.getDisease())) {
-                    patientsWaiting.add(patient);
-                    DNIlist.add(patient.getDNI());
-                } else {
-                    patientsWaiting.add(patient);
-                    DNIlist.add(patient.getDNI());
-                    System.out.println("We do not have such speciality");
-                }
-            } else System.out.println("The given DNI is already registered");
+            if (validPhone(patient.getPhone())) {
+                if (validSSN(patient.getSSN())) {
+                    if (validAge(patient.getAge())) {
+                        if (!checkDNI(patient.getDNI())) {
+                            if (validSpeciality(patient.getDisease())) {
+                                patientsWaiting.add(patient);
+                                DNIlist.add(patient.getDNI());
+                            } else {
+                                patientsWaiting.add(patient);
+                                DNIlist.add(patient.getDNI());
+                                System.out.println("We do not have such speciality");
+                            }
+                        } else System.out.println("The given DNI is already registered");
+                    } else System.out.println("The age must be positive and below 150");
+                } else System.out.println("The SSN must have 12 digits.");
+            } else System.out.println("The phone must have 9 digits and start with 6,7,8 or 9");
         } else System.out.println("The given DNI is not valid. Please introduce a sequence of 8 numbers followed by a letter.");
     }
 
+
+    //                } else System.out.println("The phone must have 9 digits and start with 6,7,8 or 9");
+//                    } else System.out.println("The age must be positive and below 150");
+//                } else System.out.println("The given speciality is not registered.");
+//            } else System.out.println("The given DNI is not registered");
+//        } else System.out.println("The given DNI is not valid. Please introduce a sequence of 8 numbers followed by a letter.");
     public void removeDoctor(Doctor d1) {
         if (doctors.contains(d1)) {
             doctors.remove(d1);
@@ -130,6 +148,10 @@ public class Hospital {
         this.doctors = doctors;
     }
 
+    public ArrayList<String> getDNIlist() {
+        return DNIlist;
+    }
+
     public boolean doctorRegistered(String DNI) {
         for (Doctor doc : doctors) {
             if (doc.getDNI().equals(DNI))
@@ -172,10 +194,10 @@ public class Hospital {
     }
 
     //https://www.baeldung.com/java-check-string-number
-    //Método isNumeric
-    //Recomiendan hacer este método para solucionar la comprobación de dígitos. Si no se hace con try y catch daría el error NumberFormatException
-    //al intentar hacer parse al double.
-    //Así que a través del catch conseguimos que el método devuelva un booleano, también comprueba que el String no está vacío.
+//Método isNumeric
+//Recomiendan hacer este método para solucionar la comprobación de dígitos. Si no se hace con try y catch daría el error NumberFormatException
+//al intentar hacer parse al double.
+//Así que a través del catch conseguimos que el método devuelva un booleano, también comprueba que el String no está vacío.
     private boolean isNumeric(String str) {
         if (str == null) {
             return false;
@@ -188,7 +210,11 @@ public class Hospital {
         return true;
     }
 
-    //At this moment, it's the time to create new validations when we enter data. For
+    private boolean validSSN(String SSN) {
+        return SSN.length() == 12;
+    }
+
+//At this moment, it's the time to create new validations when we enter data. For
 //example:
 //• DNI must be 9 characters (8 numbers following by 1 letter)
 //• SSN must be 12 digits
@@ -199,8 +225,13 @@ public class Hospital {
 //Imagine how your program can be broken: phones, empty waiting patients, empty
 //data, duplicated DNIs, duplicated specialities... and make the corresponding checks
 //and modifications in your program.
+
+    private boolean validPhone(String phone) {
+        return phone.length() == 9 && (phone.startsWith("6") || phone.startsWith("7") || phone.startsWith("8") || phone.startsWith("9"));
+    }
+
     //https://www.w3api.com/Java/Character/isLetter/
-    //MÉTODO Character.isLetter()
+//MÉTODO Character.isLetter()
     public boolean validDNI(String DNI) {
         return DNI.length() == 9 && isNumeric(DNI.substring(0, 8)) && Character.isLetter(DNI.charAt(8));
     }
@@ -372,6 +403,7 @@ public class Hospital {
                     if (doctorRegistered(DNI7)) {
                         System.out.println("Doctor " + getDoctorFromDNI(DNI7).getName() + " " + getDoctorFromDNI(DNI7).getLastName() + " has been removed.");
                         doctors.remove(getDoctorFromDNI(DNI7));
+                        DNIlist.remove(DNI7);
                     } else System.out.println("The given DNI is not registered.");
                 } else {
                     System.out.println("The given DNI is not valid. Please introduce a sequence of 8 numbers followed by a letter.");
@@ -406,16 +438,16 @@ public class Hospital {
     }
 
     //PART 5 – SPECIALITIES
-    //We're going to add a new option to our app to display info about specialities:
-    //9 - Info specialities [Info]
-    //10- Exit
-    //If the user chooses this option, it must display a submenu with the following options:
-    //1 - List of specialities attended by our doctors
-    //2 - List of specialities not covered with unattended patients
-    //3 - Exit.
-    //First option will display all the specialities covered at our hospital and which doctor
-    //works in each of them and second option will display all the specialities not covered
-    //in our hospital with unattended patients.
+//We're going to add a new option to our app to display info about specialities:
+//9 - Info specialities [Info]
+//10- Exit
+//If the user chooses this option, it must display a submenu with the following options:
+//1 - List of specialities attended by our doctors
+//2 - List of specialities not covered with unattended patients
+//3 - Exit.
+//First option will display all the specialities covered at our hospital and which doctor
+//works in each of them and second option will display all the specialities not covered
+//in our hospital with unattended patients.
     private void showSpecialitiesMenu() {
         System.out.println("Choose an option: ");
         System.out.println("1 - List of specialities attended by our doctors.");
@@ -471,33 +503,33 @@ public class Hospital {
                 String lastName4 = sc.nextLine();
                 System.out.print("Introduce speciality: ");
                 String dis4 = sc.nextLine();
-                System.out.print("Introduce salary: ");
-                int ssn4 = sc.nextInt();
-                sc.nextLine();
-                System.out.print("Introduce age: ");
-                int age4 = sc.nextInt();
-                sc.nextLine();
-                System.out.print("Introduce phone: ");
-                String phone4 = sc.nextLine();
                 if (validSpeciality(dis4)) {
-                    Doctor d4 = new Doctor(DNI4, name4, lastName4, dis4, ssn4, age4, phone4);
-                    System.out.println("Doctor" + name4 + " " + lastName4 + " profile has been modified.");
-                    doctors.add(d4);
-                    doctors.remove(getDoctorFromDNI(DNI4));
+                    System.out.print("Introduce salary: ");
+                    int salary = sc.nextInt();
+                    sc.nextLine();
+                    System.out.print("Introduce age: ");
+                    int age4 = sc.nextInt();
+                    sc.nextLine();
+                    if (validAge(age4)) {
+                        System.out.print("Introduce phone: ");
+                        String phone4 = sc.nextLine();
+                        if (validPhone(phone4)) {
+                            Doctor d4 = new Doctor(DNI4, name4, lastName4, dis4, salary, age4, phone4);
+                            System.out.println("Doctor" + name4 + " " + lastName4 + " profile has been modified.");
+                            doctors.add(d4);
+                            doctors.remove(getDoctorFromDNI(DNI4));
+                        } else System.out.println("The phone must have 9 digits and start with 6,7,8 or 9");
+                    } else System.out.println("The age must be positive and below 150");
                 } else System.out.println("The given speciality is not registered.");
-            } else {
-                System.out.println("The given DNI is not registered");
-
-            }
-        } else
-            System.out.println("The given DNI is not valid. Please introduce a sequence of 8 numbers followed by a letter.");
+            } else System.out.println("The given DNI is not registered");
+        } else System.out.println("The given DNI is not valid. Please introduce a sequence of 8 numbers followed by a letter.");
     }
 
     private void registerPatient() {
         System.out.print("Introduce DNI: ");
         String DNI = sc.nextLine();
         if (validDNI(DNI)) {
-            if (checkDNI(DNI)) {
+            if (!checkDNI(DNI)) {
                 System.out.print("Introduce first name: ");
                 String name = sc.nextLine();
                 System.out.print("Introduce last name: ");
@@ -506,14 +538,20 @@ public class Hospital {
                 String disease = sc.nextLine();
                 System.out.print("Introduce SSN: ");
                 String ssn = sc.nextLine();
-                System.out.print("Introduce age: ");
-                int age = sc.nextInt();
-                sc.nextLine();
-                System.out.print("Introduce phone: ");
-                String phone = sc.nextLine();
-                Patient p1 = new Patient(DNI, name, lastName, disease, ssn, age, phone);
-                addPatient(p1);
-                System.out.println("Patient " + p1.getName() + " " + p1.getLastName() + " has been registered.");
+                if (validSSN(ssn)) {
+                    System.out.print("Introduce age: ");
+                    int age = sc.nextInt();
+                    sc.nextLine();
+                    if (validAge(age)) {
+                        System.out.print("Introduce phone: ");
+                        String phone = sc.nextLine();
+                        if (validPhone(phone)) {
+                            Patient p1 = new Patient(DNI, name, lastName, disease, ssn, age, phone);
+                            addPatient(p1);
+                            System.out.println("Patient " + p1.getName() + " " + p1.getLastName() + " has been registered.");
+                        } else System.out.println("The phone must have 9 digits and start with 6,7,8 or 9");
+                    } else System.out.println("The age must be positive and below 150");
+                } else System.out.println("The SSN must have 12 digits.");
             } else System.out.println("The given DNI is already registered.");
         } else System.out.println("The given DNI is not valid. Please introduce a sequence of 8 numbers followed by a letter.");
     }
@@ -523,7 +561,6 @@ public class Hospital {
         String DNI3 = sc.nextLine();
         if (validDNI(DNI3)) {
             if (patientRegistered(DNI3)) {
-                patientsWaiting.remove(getPatientFromDNI(DNI3));
                 System.out.print("Introduce first name: ");
                 String name3 = sc.nextLine();
                 System.out.print("Introduce last name: ");
@@ -532,16 +569,21 @@ public class Hospital {
                 String dis3 = sc.nextLine();
                 System.out.print("Introduce SSN: ");
                 String ssn3 = sc.nextLine();
-                System.out.print("Introduce age: ");
-                int age3 = sc.nextInt();
-                sc.nextLine();
-                System.out.print("Introduce phone: ");
-                String phone3 = sc.nextLine();
-                Patient p3 = new Patient(DNI3, name3, lastName3, dis3, ssn3, age3, phone3);
-                patientsWaiting.add(p3);
-            } else {
-                System.out.println("The given DNI is not registered");
-            }
+                if (validSSN(ssn3)) {
+                    System.out.print("Introduce age: ");
+                    int age3 = sc.nextInt();
+                    sc.nextLine();
+                    if (validAge(age3)) {
+                        System.out.print("Introduce phone: ");
+                        String phone3 = sc.nextLine();
+                        if (validPhone(phone3)) {
+                            Patient p3 = new Patient(DNI3, name3, lastName3, dis3, ssn3, age3, phone3);
+                            patientsWaiting.add(p3);
+                            patientsWaiting.remove(getPatientFromDNI(DNI3));
+                        } else System.out.println("The phone must have 9 digits and start with 6,7,8 or 9");
+                    } else System.out.println("The age must be positive and below 150");
+                } else System.out.println("The SSN must have 12 digits.");
+            } else System.out.println("The given DNI is not registered");
         } else System.out.println("The given DNI is not valid. Please introduce a sequence of 8 numbers followed by a letter.");
     }
 
@@ -556,22 +598,25 @@ public class Hospital {
                 String lastNameD = sc.nextLine();
                 System.out.print("Introduce speciality: ");
                 String speciality = sc.nextLine();
-                System.out.print("Introduce salary: ");
-                int salary = sc.nextInt();
-                sc.nextLine();
-                System.out.print("Introduce age: ");
-                int ageD = sc.nextInt();
-                sc.nextLine();
-                System.out.print("Introduce phone: ");
-                String phoneD = sc.nextLine();
-                Doctor d1 = new Doctor(DNID, nameD, lastNameD, speciality, salary, ageD, phoneD);
                 if (validSpeciality(speciality)) {
-                    System.out.println("Doctor " + nameD + " " + lastNameD + " has been registered.");
-                    addDoctor(d1);
-                }
+                    System.out.print("Introduce salary: ");
+                    int salary = sc.nextInt();
+                    sc.nextLine();
+                    System.out.print("Introduce age: ");
+                    int ageD = sc.nextInt();
+                    sc.nextLine();
+                    if (validAge(ageD)) {
+                        System.out.print("Introduce phone: ");
+                        String phoneD = sc.nextLine();
+                        if (validPhone(phoneD)) {
+                            Doctor d1 = new Doctor(DNID, nameD, lastNameD, speciality, salary, ageD, phoneD);
+                            System.out.println("Doctor " + nameD + " " + lastNameD + " has been registered.");
+                            addDoctor(d1);
+                        } else System.out.println("The phone must have 9 digits and start with 6,7,8 or 9");
+                    } else System.out.println("The age must be positive and below 150");
+                } else System.out.println("The given speciality is not valid.");
             } else System.out.println("The given DNI is not valid. Please introduce a sequence of 8 numbers followed by a letter.");
         } else System.out.println("The given DNI is already registered.");
-
     }
 }
 
