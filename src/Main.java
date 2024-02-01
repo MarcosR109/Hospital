@@ -25,7 +25,8 @@ public class Main {
         System.out.println(SanPedro.getPatientsWaiting());
         //System.out.println(SanPedro.getPatientsWaiting());
         //System.out.println(SanPedro);
-        SanPedro.menu();
+        HospitalHolding h1 = new HospitalHolding("Pacompany");
+        h1.menu();
         //SanPedro.attendPatient();
         //SanPedro.attendPatient();
        // System.out.println(SanPedro.getPatientsWaiting());

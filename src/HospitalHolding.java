@@ -7,78 +7,98 @@ public class HospitalHolding {
     //a new one. For this we need to register each hospital separately.
 
     String businessName;
-    private HashMap <Integer, Hospital> hospitals;
-    private HashMap <Integer,String> passwords;
+    private HashMap<Integer, Hospital> hospitals;
+    private HashMap<Integer, String> passwords;
     private int mapID;
     Scanner sc = new Scanner(System.in);
-    public HospitalHolding(){
-        hospitals=new HashMap<>();
-        passwords=new HashMap<>();
-        mapID=1;
+
+    public HospitalHolding(String name) {
+        businessName = name;
+        hospitals = new HashMap<>();
+        passwords = new HashMap<>();
+        mapID = 1;
     }
+
     public void menu() {
         System.out.println("#####################################");
-        System.out.println("Welcome to : " + businessName + " currently we have " + mapID + " hospitals where to be attended.");
+        System.out.println("Welcome to  " + businessName + " currently we have " + hospitals.size() + " hospitals where to be attended.");
         if (!hospitals.isEmpty()) {
-            for (int key : hospitals.keySet())
-                System.out.println(mapID + " - " + hospitals.get(mapID).getName());
+            for (int key : hospitals.keySet()) {
+                System.out.println(key + " - " + hospitals.get(key).getName());
+            }
         }
-        System.out.println(" 8 - New Hospital");
-        System.out.println(" 9 - Delete Hospital");
+        System.out.println("8 - New Hospital");
+        System.out.println("9 - Delete Hospital");
         System.out.println("Choose an option:");
+        int input = sc.nextInt();
+        sc.nextLine();
+        boolean flag = true;
+        switch (input) {
 
-
-        String input = sc.nextLine();
-    }
-     //   switch (input) {
-            /*case mapID:
-                hospitals.get(mapID).menu();
+            case 1:
+                if (hospitals.containsKey(1)) hospitals.get(1).menu();
+                break;
+            case 2:
+                if (hospitals.containsKey(2)) hospitals.get(2).menu();
+                break;
+            case 3:
+                if (hospitals.containsKey(3)) hospitals.get(3).menu();
+                break;
+            case 4:
+                if (hospitals.containsKey(4)) hospitals.get(4).menu();
+                break;
+            case 5:
+                if (hospitals.containsKey(5)) hospitals.get(5).menu();
                 break;
             case 8:
                 addHospital();
                 break;
+            case 9:
+                removeHospital();
+                break;
+            default:
+                flag = false;
         }
-            //case 9:
-            //    removeHospital();
 
-        }
-    }
-
-    /*private void removeHospital() {
-        int aux = mapID;
-        while (aux>0) {
-            System.out.println(aux + " - " + hospitals.get(aux).getName());
-            aux--;
-        }
-    }
-        if (hospitals.isEmpty()){
-            System.out.println("We don't have any registered hospital.");
-            return;
-        }
+        if (flag) menu();
         else {
-        System.out.println("Choose the hospital you want to remove: ");
-        int counter = 1;
-        for (int hsKey: hospitals.keySet()){
-            System.out.println(hsKey + "  " + hospitals.get(hsKey));
-            counter++;
+            System.out.println("bye!!");
         }
-        String input = sc.nextLine();
-        switch (input)
-            case c
+
+    }
+
+
+    private void removeHospital() {
+        if (hospitals.isEmpty()) System.out.println("We haven't build any hospital yet!");
+        else {
+            for (int key : hospitals.keySet()) {
+                System.out.println(key + " - " + hospitals.get(key).getName());
+            }
+            System.out.println("Choose the hospital you want to remove");
+            int option = sc.nextInt();
+            sc.nextLine();
+            if (hospitals.containsKey(option)){
+                System.out.println(hospitals.get(option).getName() + " has been removed");
+                hospitals.remove(option);
+                mapID--;
+            } else System.out.println("Please choose a hospital of the list.");
         }
-*/
-    public void addHospital(){
-        if (mapID==5){
+        }
+
+    public void addHospital() {
+        if (mapID == 6) {
             System.out.println("We cannot build more hospitals! Sorry!");
-        }
-        else {
+        } else {
             System.out.println("Choose a name for your hospital.");
             String name = sc.nextLine();
-            hospitals.put(mapID, new Hospital(name));
-            System.out.println("Now please select a password for the hospital.");
+            Hospital hs = new Hospital(name);
+            hospitals.put(mapID, hs);
+            System.out.println("Now please select a password for " + name);
             String pass = sc.nextLine();
-            passwords.put(mapID,pass);
+            passwords.put(mapID, pass);
             mapID++;
+            System.out.println(hospitals);
+            System.out.println(passwords);
         }
     }
 
