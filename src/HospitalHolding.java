@@ -29,6 +29,7 @@ public class HospitalHolding {
         }
         System.out.println("8 - New Hospital");
         System.out.println("9 - Delete Hospital");
+        System.out.println("10 - Exit");
         System.out.println("Choose an option:");
         int input = sc.nextInt();
         sc.nextLine();
@@ -36,19 +37,44 @@ public class HospitalHolding {
         switch (input) {
 
             case 1:
-                if (hospitals.containsKey(1)) hospitals.get(1).menu();
+                if (hospitals.containsKey(1)) {
+                    if (checkPasswordCoincidence(1)) {
+                        hospitals.get(1).menu();
+                    }
+                    break;
+                }
                 break;
             case 2:
-                if (hospitals.containsKey(2)) hospitals.get(2).menu();
+                if (hospitals.containsKey(2)) {
+                    if (checkPasswordCoincidence(2)) {
+                        hospitals.get(2).menu();
+                    }
+                    break;
+                }
                 break;
             case 3:
-                if (hospitals.containsKey(3)) hospitals.get(3).menu();
+                if (hospitals.containsKey(3)) {
+                    if (checkPasswordCoincidence(3)) {
+                        hospitals.get(3).menu();
+                    }
+                    break;
+                }
                 break;
             case 4:
-                if (hospitals.containsKey(4)) hospitals.get(4).menu();
+                if (hospitals.containsKey(4)) {
+                    if (checkPasswordCoincidence(4)) {
+                        hospitals.get(4).menu();
+                    }
+                    break;
+                }
                 break;
             case 5:
-                if (hospitals.containsKey(5)) hospitals.get(5).menu();
+                if (hospitals.containsKey(5)) {
+                    if (checkPasswordCoincidence(5)) {
+                        hospitals.get(5).menu();
+                    }
+                    break;
+                }
                 break;
             case 8:
                 addHospital();
@@ -56,7 +82,7 @@ public class HospitalHolding {
             case 9:
                 removeHospital();
                 break;
-            default:
+            case 10:
                 flag = false;
         }
 
@@ -77,13 +103,13 @@ public class HospitalHolding {
             System.out.println("Choose the hospital you want to remove");
             int option = sc.nextInt();
             sc.nextLine();
-            if (hospitals.containsKey(option)){
+            if (hospitals.containsKey(option)) {
                 System.out.println(hospitals.get(option).getName() + " has been removed");
                 hospitals.remove(option);
                 mapID--;
             } else System.out.println("Please choose a hospital of the list.");
         }
-        }
+    }
 
     public void addHospital() {
         if (mapID == 6) {
@@ -97,9 +123,31 @@ public class HospitalHolding {
             String pass = sc.nextLine();
             passwords.put(mapID, pass);
             mapID++;
-            System.out.println(hospitals);
-            System.out.println(passwords);
         }
+    }
+
+    private boolean checkPassword(int ID, String pass) {
+        return pass.equals(passwords.get(ID));
+    }
+
+    private boolean checkPasswordCoincidence(int ID) {
+        int counter = 0;
+        int tryCounter = 3;
+        while (counter < 3) {
+            String pass = sc.nextLine();
+            System.out.println("Introduce password.");
+            if (checkPassword(ID, pass)) {
+                System.out.println("Welcome!");
+                return true;
+            } else {
+                counter++;
+                if (tryCounter >= 0) {
+                    System.out.println("You have " + tryCounter + " remaining tries.");
+                    tryCounter--;
+                }
+            }
+        }
+        return false;
     }
 
     //WELCOME TO “BUSINESS NAME”
