@@ -6,11 +6,15 @@ public class HospitalHolding {
     //Finally, we would suppose that our hospital has grown so much that we have to build
     //a new one. For this we need to register each hospital separately.
 
+    /**
+     * He usado mapID como entero para poder hacer coincidir los ID de hospitals y passwords sumándolo y restándolo según tocase.
+     */
     String businessName;
     private HashMap<Integer, Hospital> hospitals;
     private HashMap<Integer, String> passwords;
     private int mapID;
     Scanner sc = new Scanner(System.in);
+
 
     public HospitalHolding(String name) {
         businessName = name;
@@ -35,7 +39,6 @@ public class HospitalHolding {
         sc.nextLine();
         boolean flag = true;
         switch (input) {
-
             case 1:
                 if (hospitals.containsKey(1)) {
                     if (checkPasswordCoincidence(1)) {
@@ -84,6 +87,7 @@ public class HospitalHolding {
                 break;
             case 10:
                 flag = false;
+                break;
         }
 
         if (flag) menu();
@@ -101,8 +105,7 @@ public class HospitalHolding {
                 System.out.println(key + " - " + hospitals.get(key).getName());
             }
             System.out.println("Choose the hospital you want to remove");
-            int option = sc.nextInt();
-            sc.nextLine();
+            int option = Integer.parseInt(sc.nextLine());
             if (hospitals.containsKey(option)) {
                 System.out.println(hospitals.get(option).getName() + " has been removed");
                 hospitals.remove(option);
@@ -117,6 +120,11 @@ public class HospitalHolding {
         } else {
             System.out.println("Choose a name for your hospital.");
             String name = sc.nextLine();
+            for (Integer key : hospitals.keySet()) {
+                if (hospitals.get(key).getName().equals(name))
+                    System.out.println("That hospital is already built.");
+                return;
+            }
             Hospital hs = new Hospital(name);
             hospitals.put(mapID, hs);
             System.out.println("Now please select a password for " + name);
@@ -126,6 +134,8 @@ public class HospitalHolding {
         }
     }
 
+
+
     private boolean checkPassword(int ID, String pass) {
         return pass.equals(passwords.get(ID));
     }
@@ -133,23 +143,34 @@ public class HospitalHolding {
     private boolean checkPasswordCoincidence(int ID) {
         int counter = 0;
         int tryCounter = 3;
-        while (counter < 3) {
-            String pass = sc.nextLine();
+        while (counter <= 3) {
             System.out.println("Introduce password.");
+            String pass = sc.nextLine();
             if (checkPassword(ID, pass)) {
                 System.out.println("Welcome!");
                 return true;
             } else {
-                counter++;
                 if (tryCounter >= 0) {
                     System.out.println("You have " + tryCounter + " remaining tries.");
                     tryCounter--;
+                    counter++;
                 }
             }
         }
         return false;
     }
 
+
+
+
+
+    //Método para añadir hospitales desde el main y que el testing no sea espantoso
+
+    public void addHospitalFromMain(String name,String password){
+        hospitals.put(mapID,new Hospital(name));
+        passwords.put(mapID,password);
+        mapID++;
+    }
     //WELCOME TO “BUSINESS NAME”
     //CURRENTLY WE HAVE “X” HOSPITALS WHERE TO BE ATTENDED
     //1- Name of Hospital 1
