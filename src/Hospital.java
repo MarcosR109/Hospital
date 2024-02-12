@@ -463,7 +463,7 @@ public class Hospital {
 //First option will display all the specialities covered at our hospital and which doctor
 //works in each of them and second option will display all the specialities not covered
 //in our hospital with unattended patients.
-    private void showSpecialitiesMenu(){
+    private void showSpecialitiesMenu() {
         System.out.println("Choose an option: ");
         System.out.println("1 - List of specialities attended by our doctors.");
         System.out.println("2 - List of specialities not covered with unattended patients.");
@@ -538,7 +538,8 @@ public class Hospital {
                     } else System.out.println("The age must be positive and below 150");
                 } else System.out.println("The given speciality is not registered.");
             } else System.out.println("The given DNI is not registered");
-        } else System.out.println("The given DNI is not valid. Please introduce a sequence of 8 numbers followed by a letter.");
+        } else
+            System.out.println("The given DNI is not valid. Please introduce a sequence of 8 numbers followed by a letter.");
     }
 
     private void registerPatient() {
@@ -602,8 +603,7 @@ public class Hospital {
                     } else System.out.println("The age must be positive and below 150");
                 } else System.out.println("The SSN must have 12 digits.");
             } else System.out.println("The given DNI is not registered");
-        } else
-            System.out.println("The given DNI is not valid. Please introduce a sequence of 8 numbers followed by a letter.");
+        } else System.out.println("The given DNI is not valid. Please introduce a sequence of 8 numbers followed by a letter.");
     }
 
     private void registerDoctor() {

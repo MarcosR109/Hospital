@@ -121,9 +121,10 @@ public class HospitalHolding {
             System.out.println("Choose a name for your hospital.");
             String name = sc.nextLine();
             for (Integer key : hospitals.keySet()) {
-                if (hospitals.get(key).getName().equals(name))
+                if (hospitals.get(key).getName().equals(name)) {
                     System.out.println("That hospital is already built.");
-                return;
+                    return;
+                }
             }
             Hospital hs = new Hospital(name);
             hospitals.put(mapID, hs);

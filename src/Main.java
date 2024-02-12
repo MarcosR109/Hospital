@@ -2,8 +2,6 @@ import java.util.ArrayList;
 import java.util.Set;
 
 public class Main {
-
-
     public static void main(String[] args) {
         //Hospital SanPedro = new Hospital("San Pedro");
         ///*DNI lenght 10 */ SanPedro.addDoctor(new Doctor("342121331D","Paco","Pérez","Traumatology",53423,30,"653534234"));
@@ -15,7 +13,6 @@ public class Main {
         ///*Correcto*/ SanPedro.addPatient(new Patient("84229441T","Paca","Ful","Traumatology","645116644964",20,"658211659"));
         //SanPedro.menu();
         HospitalHolding h1 = new HospitalHolding("La Company");
-        h1.addHospitalFromMain("SanTo","1234");
         h1.menu();
     }
 }
